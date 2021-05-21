@@ -42,6 +42,9 @@ RUN apt-get update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 \
     && ACCEPT_EULA=Y apt-get install -y mssql-tools \
     && apt-get install -y unixodbc-dev \
+       gcc \
+       musl-dev \
+       make \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -51,8 +54,8 @@ RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.0
 RUN groupadd --force -g $WWWGROUP sail
 RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
-RUN pecl install sqlsvr
-RUN pecl install pdo_sqlsvr
+RUN pecl install sqlsrv
+RUN pecl install pdo_sqlsrv
 
 RUN printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/8.0/mods-available/sqlsrv.ini
 RUN printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/8.0/mods-available/pdo_sqlsrv.ini
