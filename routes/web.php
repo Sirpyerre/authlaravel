@@ -24,4 +24,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/employees', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employees');
+Route::get('/employee', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employee');
+Route::get('/employee/index', 'App\Http\Controllers\EmployeeController@index');
+Route::get('/employee/list', 'App\Http\Controllers\EmployeeController@index');
+Route::get('/employee/form', 'App\Http\Controllers\EmployeeController@index');
+Route::get('/employee/edit/{id}', 'App\Http\Controllers\EmployeeController@index');
+

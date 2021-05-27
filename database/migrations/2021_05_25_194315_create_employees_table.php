@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name', 50);
             $table->string('second_name', 50)->nullable();
             $table->string('email', 100);
-            $table->date('bird_date')->nullable();
+            $table->date('birthday')->nullable();
             $table->string('phone')->nullable();
             $table->unsignedBigInteger('position_id');
             $table->integer('salary')->default(0);
