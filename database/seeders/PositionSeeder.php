@@ -23,8 +23,6 @@ class PositionSeeder extends Seeder
             ['title' => 'Administrator'],
         ];
 
-        $employee = Factory::create();
-
         foreach ($positionsDefault as $position){
             Position::create($position);
         }
