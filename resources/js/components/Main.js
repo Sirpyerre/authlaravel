@@ -20,7 +20,7 @@ const Main = () => {
                 <Switch>
                     <Route path="/employee/index" exact component={List} />
                     <Route path="/employee/form" component={Form} />
-                    <Route path="/employee/edit" component={Edit} />
+                    <Route path="/employee/edit/:id" component={Edit} />
                 </Switch>
             </main>
         </Router>

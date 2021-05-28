@@ -21,6 +21,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email', 100);
             $table->date('birthday')->nullable();
             $table->string('phone')->nullable();
+            $table->string('picture',300)->default('');
             $table->unsignedBigInteger('position_id');
             $table->integer('salary')->default(0);
             $table->timestamps();

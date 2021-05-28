@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Position;
+use Illuminate\Http\JsonResponse;
 
 class EmployeeController extends Controller
 {
@@ -10,4 +11,12 @@ class EmployeeController extends Controller
     {
         return view('employees.index');
     }
+
+    public function getPositions(): JsonResponse
+    {
+        $positions = Position::all();
+
+        return response()->json($positions);
+    }
+
 }
