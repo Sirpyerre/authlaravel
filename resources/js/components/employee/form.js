@@ -1,4 +1,4 @@
-import React from 'react';
+import React, from 'react';
 import {Form, Input, InputNumber, Button, DatePicker, Select, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 
@@ -24,7 +24,10 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FormEmployee = ({name}) => {
+const FormEmployee = ({name, positions}) => {
+
+    console.log("positions:", positions);
+
     const onFinish = (values) => {
         console.log(values);
     };
@@ -36,6 +39,9 @@ const FormEmployee = ({name}) => {
         }
         return e && e.fileList;
     };
+
+    const options = positions.map(d => <Select.Option key={d.id}>{d.title}</Select.Option>);
+
     return (
         <Form
             {...layout} name={name}
@@ -106,12 +112,19 @@ const FormEmployee = ({name}) => {
                     <Button icon={<UploadOutlined/>}>Click to upload</Button>
                 </Upload>
             </Form.Item>
-            <Form.Item name='position_id' label="Position">
-                <Select allowClear={true}>
-                    <Select.Option value="demo">Demo</Select.Option>
+            <Form.Item name='position_id' label="Position" rules={[{required: true}]}>
+                <Select allowClear={true} placeholder="Please select a position">
+                    {options}
                 </Select>
             </Form.Item>
-            <Form.Item name='salary' label="Salary">
+            <Form.Item name='salary' label="Salary"
+                       rules={[
+                           {
+                               required: true,
+                               type: 'number'
+                           },
+                       ]}
+            >
                 <InputNumber/>
             </Form.Item>
             <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
