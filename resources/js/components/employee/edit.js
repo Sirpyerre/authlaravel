@@ -1,11 +1,15 @@
 import React from 'react';
-
-const Edit = () => {
+import Form from './form';
+const EditEmployee = ({match}) => {
+    console.log('id', match);
+    const {id} = match.params
+    console.log('id', id);
     return (
         <>
-            Edit EMPLOYEES
+            <h3>Edit employee {id}</h3>
+            <Form name="editEmployee"/>
         </>
     )
-};
+}
 
-export default Edit;
+export default EditEmployee;

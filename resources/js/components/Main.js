@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 
-import Form from '../components/employee/form';
+import NewEmployee from '../components/employee/newEmployee';
 import List from '../components/employee/list';
-import Edit from '../components/employee/edit';
+import EditEmployee from '../components/employee/edit';
 import Nav from "./employee/Nav";
 import 'antd/dist/antd.css';
 
@@ -19,8 +19,8 @@ const Main = () => {
                 <Nav/>
                 <Switch>
                     <Route path="/employee/index" exact component={List} />
-                    <Route path="/employee/form" component={Form} />
-                    <Route path="/employee/edit/:id" component={Edit} />
+                    <Route path="/employee/form" component={NewEmployee} />
+                    <Route path="/employee/edit/:id" component={EditEmployee} />
                 </Switch>
             </main>
         </Router>

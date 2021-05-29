@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Menu} from 'antd';
 import {Link} from "react-router-dom";
-import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
+import {MailOutlined, AppstoreOutlined} from '@ant-design/icons';
 
 const Nav = () => {
     const [current, setCurrent] = useState('listing');

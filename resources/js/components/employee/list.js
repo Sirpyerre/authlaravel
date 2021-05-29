@@ -20,17 +20,17 @@ const List = () => {
             )
         }
 
-    const onChange = page => {
-        console.log(page);
-        connection.get(`/employee/get?page=${page}`)
-            .then(response => {
-                console.log('response.data:', response.data);
-                setEmployees(response.data)
-            });
-    };
+        const onChange = page => {
+            console.log(page);
+            connection.get(`/employee/get?page=${page}`)
+                .then(response => {
+                    console.log('response.data:', response.data);
+                    setEmployees(response.data)
+                });
+        };
 
 
-    return (
+        return (
             <>
                 <div className="table-responsive ">
                     <table className="table">
@@ -59,8 +59,10 @@ const List = () => {
                                         <td>{item.position}</td>
                                         <td>$ {item.salary}</td>
                                         <td>
-                                            <a className="btn btn-warning btn-sm mr-2" href={`/employee/edit/${item.id}`}>Edit</a>
-                                            <a className="btn btn-danger btn-sm" href={`/employee/delete/${item.id}`}>Delete</a>
+                                            <a className="btn btn-warning btn-sm mr-2"
+                                               href={`/employee/edit/${item.id}`}>Edit</a>
+                                            <a className="btn btn-danger btn-sm"
+                                               href={`/employee/delete/${item.id}`}>Delete</a>
                                         </td>
                                     </tr>
                                 )

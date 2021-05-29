@@ -31,3 +31,4 @@ Route::get('/employee/form', 'App\Http\Controllers\EmployeeController@index');
 Route::get('/employee/edit/{id}', 'App\Http\Controllers\EmployeeController@index');
 
 Route::get('/employee/get', 'App\Http\Controllers\EmployeeController@list');
+Route::get('/positions', 'App\Http\Controllers\EmployeeController@getPositions');

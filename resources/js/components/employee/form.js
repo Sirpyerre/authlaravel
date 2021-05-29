@@ -1,6 +1,6 @@
 import React from 'react';
-
-import {Form, Input, InputNumber, Button} from 'antd';
+import {Form, Input, InputNumber, Button, DatePicker, Select, Upload} from 'antd';
+import {UploadOutlined} from '@ant-design/icons';
 
 const layout = {
     labelCol: {
@@ -24,15 +24,25 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FormEmployee = () => {
+const FormEmployee = ({name}) => {
     const onFinish = (values) => {
         console.log(values);
     };
 
+    const normFile = (e) => {
+        console.log('Upload event:', e);
+        if (Array.isArray(e)) {
+            return e;
+        }
+        return e && e.fileList;
+    };
     return (
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+        <Form
+            {...layout} name={name}
+            onFinish={onFinish}
+            validateMessages={validateMessages}>
             <Form.Item
-                name={['user', 'name']}
+                name='name'
                 label="Name"
                 rules={[
                     {
@@ -43,34 +53,66 @@ const FormEmployee = () => {
                 <Input/>
             </Form.Item>
             <Form.Item
-                name={['user', 'email']}
+                name='first_name'
+                label="First Name"
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
+            >
+                <Input/>
+            </Form.Item>
+            <Form.Item name='second_name' label="Second Name">
+                <Input/>
+            </Form.Item>
+            <Form.Item
+                name={'email'}
                 label="Email"
                 rules={[
                     {
                         type: 'email',
+                    },
+                    {
+                        required: true,
                     },
                 ]}
             >
                 <Input/>
             </Form.Item>
             <Form.Item
-                name={['user', 'age']}
-                label="Age"
-                rules={[
-                    {
-                        type: 'number',
-                        min: 0,
-                        max: 99,
-                    },
-                ]}
+                name='birthday'
+                label="Birth day"
             >
-                <InputNumber/>
+                <DatePicker/>
             </Form.Item>
-            <Form.Item name={['user', 'website']} label="Website">
+            <Form.Item name='phone' label="Phone">
                 <Input/>
             </Form.Item>
-            <Form.Item name={['user', 'introduction']} label="Introduction">
-                <Input.TextArea/>
+            {/*<Form.Item name='picture' label="Photo">*/}
+            {/*    <Input.TextArea/>*/}
+            {/*</Form.Item>*/}
+            <Form.Item
+                name="picture"
+                label="Photo"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+            >
+                <Upload
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    listType="picture"
+                    maxCount={1}
+                >
+                    <Button icon={<UploadOutlined/>}>Click to upload</Button>
+                </Upload>
+            </Form.Item>
+            <Form.Item name='position_id' label="Position">
+                <Select allowClear={true}>
+                    <Select.Option value="demo">Demo</Select.Option>
+                </Select>
+            </Form.Item>
+            <Form.Item name='salary' label="Salary">
+                <InputNumber/>
             </Form.Item>
             <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
                 <Button type="primary" htmlType="submit">
