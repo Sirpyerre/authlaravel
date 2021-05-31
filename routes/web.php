@@ -30,5 +30,7 @@ Route::get('/employee/list', 'App\Http\Controllers\EmployeeController@index');
 Route::get('/employee/form', 'App\Http\Controllers\EmployeeController@index');
 Route::get('/employee/edit/{id}', 'App\Http\Controllers\EmployeeController@index');
 
-Route::get('/employee/get', 'App\Http\Controllers\EmployeeController@list');
 Route::get('/positions', 'App\Http\Controllers\EmployeeController@getPositions');
+Route::get('/employee/get', 'App\Http\Controllers\EmployeeController@list');
+Route::post('/employee/save', 'App\Http\Controllers\EmployeeController@save');
+Route::get('/employee/editEmployee/{id}', 'App\Http\Controllers\EmployeeController@editEmployee');

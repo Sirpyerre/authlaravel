@@ -1,4 +1,4 @@
-import React, from 'react';
+import React from 'react';
 import {Form, Input, InputNumber, Button, DatePicker, Select, Upload} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 
@@ -24,13 +24,7 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
-const FormEmployee = ({name, positions}) => {
-
-    console.log("positions:", positions);
-
-    const onFinish = (values) => {
-        console.log(values);
-    };
+const FormEmployee = ({form, name, positions, saveHandler}) => {
 
     const normFile = (e) => {
         console.log('Upload event:', e);
@@ -44,8 +38,9 @@ const FormEmployee = ({name, positions}) => {
 
     return (
         <Form
+            form={form}
             {...layout} name={name}
-            onFinish={onFinish}
+            onFinish={saveHandler}
             validateMessages={validateMessages}>
             <Form.Item
                 name='name'

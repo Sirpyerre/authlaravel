@@ -36,7 +36,7 @@ class EmployeeController extends Controller
             'first_name' => 'required',
             'email' => 'required|email',
             'position_id' => 'required',
-            'salary' => 'required|number'
+            'salary' => 'required|numeric'
         ]);
 
         $response = ['status' => false, 'message' => 'error'];
@@ -61,6 +61,13 @@ class EmployeeController extends Controller
         }
 
         return response()->json($response, $status);
+    }
+
+    public function editEmployee($id) {
+        $employee = Employee::find($id);
+
+        return response()->json($employee);
+
     }
 
 }
