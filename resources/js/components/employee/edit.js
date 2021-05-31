@@ -34,6 +34,8 @@ const EditEmployee = ({match}) => {
                         'salary': data.salary,
                     });
                 }
+            }).catch(error=> {
+                console.log("error geting employee:", error);
             })
 
 
