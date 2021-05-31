@@ -34,3 +34,4 @@ Route::get('/positions', 'App\Http\Controllers\EmployeeController@getPositions')
 Route::get('/employee/get', 'App\Http\Controllers\EmployeeController@list');
 Route::post('/employee/save', 'App\Http\Controllers\EmployeeController@save');
 Route::get('/employee/editEmployee/{id}', 'App\Http\Controllers\EmployeeController@editEmployee');
+Route::post('/employee/update/{id}', 'App\Http\Controllers\EmployeeController@update');

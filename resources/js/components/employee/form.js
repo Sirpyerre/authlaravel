@@ -85,7 +85,7 @@ const FormEmployee = ({form, name, positions, saveHandler}) => {
                 name='birthday'
                 label="Birth day"
             >
-                <DatePicker/>
+                <DatePicker format="YYYY/MM/DD"/>
             </Form.Item>
             <Form.Item name='phone' label="Phone">
                 <Input/>

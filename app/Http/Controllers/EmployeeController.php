@@ -54,7 +54,7 @@ class EmployeeController extends Controller
                 'salary' => $request->salary,
             ]);
 
-            $response =['status' => true, 'message' => 'success saving'];
+            $response = ['status' => true, 'message' => 'success saving'];
             $status = 200;
         } catch (\Exception $e) {
             error_log("Error saving:" . $e->getMessage());
@@ -63,11 +63,57 @@ class EmployeeController extends Controller
         return response()->json($response, $status);
     }
 
-    public function editEmployee($id) {
+    public function editEmployee($id)
+    {
         $employee = Employee::find($id);
 
         return response()->json($employee);
+    }
 
+    public function update($id, Request $request)
+    {
+        $response = ['status' => false, 'message' => 'error'];
+        $status = 400;
+
+        $employee = Employee::find($id);
+        if (is_null($employee)) {
+            $response['message'] = 'Employee invalid';
+            return response()->json($response, $status);
+        }
+
+        $request->validate([
+            'name' => 'required',
+            'first_name' => 'required',
+            'email' => 'required|email',
+            'position_id' => 'required',
+            'salary' => 'required|numeric'
+        ]);
+
+        try {
+            $picture = '';
+            if (!is_null($request->picture)) {
+                $picture = 'algo';
+            }
+
+            $employee->name = $request->name;
+            $employee->first_name = $request->first_name;
+            $employee->second_name = $request->second_name;
+            $employee->email = $request->email;
+            $employee->birthday = $request->birthday;
+            $employee->phone = $request->phone;
+            $employee->picture = $picture;
+            $employee->position_id = $request->position_id;
+            $employee->salary = $request->salary;
+
+            $employee->save();
+
+            $response = ['status' => true, 'message' => 'success updating!'];
+            $status = 200;
+        } catch (\Exception $e) {
+            error_log("Error saving:" . $e->getMessage());
+        }
+
+        return response()->json($response, $status);
     }
 
 }

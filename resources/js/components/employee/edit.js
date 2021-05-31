@@ -3,11 +3,12 @@ import FormEmployee from "./form";
 import {Form, notification} from 'antd';
 import connection from "../../services/connection";
 import {useHistory} from "react-router-dom";
+import moment from "moment";
 
 const EditEmployee = ({match}) => {
     const [form] = Form.useForm();
     const [positions, setPositions] = useState([]);
-    const [employeeInfo, setEmployeeInfo] = useState({});
+    const [findEmployee, setFindEmployee] = useState(false);
     let history = useHistory();
 
     useEffect(() => {
@@ -22,29 +23,35 @@ const EditEmployee = ({match}) => {
             .then(response => {
                 if (response.status === 200) {
                     const data = response.data;
-                    form.setFieldsValue({
-                        'name': data.name,
-                        'first_name': data.first_name,
-                        'second_name': data.first_name,
-                        'email': data.email,
-                        'birthday': data.birthday,
-                        'phone': data.phone,
-                        'picture': data.picture,
-                        'position_id': data.position_id,
-                        'salary': data.salary,
-                    });
+
+                    if (data.email !== undefined) {
+                        console.log("email", data.email);
+                        const birthday = moment(data.birthday);
+                        console.log('date emp:', birthday);
+
+                        form.setFieldsValue({
+                            'name': data.name,
+                            'first_name': data.first_name,
+                            'second_name': data.first_name,
+                            'email': data.email,
+                            'birthday': birthday,
+                            'phone': data.phone,
+                            //                 'picture': data.picture,
+                            'position_id': data.position_id,
+                            'salary': data.salary,
+                        });
+
+                        setFindEmployee(true);
+                    }
                 }
-            }).catch(error=> {
-                console.log("error geting employee:", error);
-            })
-
-
+            }).catch(error => {
+            console.log("error geting employee:", error);
+        })
     }, []);
 
     const {id} = match.params;
     console.log('id', id);
 
-    console.log('info', employeeInfo);
 
     const editEmployee = () => {
         form.validateFields()
@@ -77,15 +84,22 @@ const EditEmployee = ({match}) => {
             })
     };
 
+    const messageNotFount = (
+        <p className="alert alert-danger">Employee not fount!</p>
+    );
+
     return (
         <>
             <h3>Edit employee {id}</h3>
-            <FormEmployee
-                form={form}
-                name="editEmployee"
-                positions={positions}
-                saveHandler={editEmployee}
-            />
+            {
+                findEmployee ? <FormEmployee
+                    form={form}
+                    name="editEmployee"
+                    positions={positions}
+                    saveHandler={editEmployee}
+                /> : messageNotFount
+            }
+
         </>
     )
 };
