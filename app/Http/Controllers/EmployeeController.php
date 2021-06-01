@@ -116,4 +116,25 @@ class EmployeeController extends Controller
         return response()->json($response, $status);
     }
 
+    public function trash($id)
+    {
+        $response = ['status' => false, 'message' => 'error'];
+        $status = 400;
+
+        $employee = Employee::find($id);
+        if (is_null($employee)) {
+            $response['message'] = 'Employee invalid';
+            return response()->json($response, $status);
+        }
+
+        try {
+            $employee->delete();
+            $response = ['status' => true, 'message' => 'success updating!'];
+            $status = 202;
+        } catch (\Exception $e) {
+            error_log("Error deleting:" . $e->getMessage());
+        }
+
+        return response()->json($response, $status);
+    }
 }

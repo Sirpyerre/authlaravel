@@ -58,29 +58,36 @@ const EditEmployee = ({match}) => {
             .then(values => {
                 console.log("values:", values);
                 try {
-                    connection.post(`/employee/update/${id}`, values).then(response => {
-                        if (response.status === 200) {
-                            notification.success({
-                                message: 'Saved',
-                                description: response.data.message
-                            });
-                            setTimeout(() => {
-                                history.push("/employee/index");
-                            }, 300);
-
-                        } else {
-                            console.log("dont save");
-                        }
-                    })
-                        .catch(error => {
-                            console.log("error:", error)
+                    connection
+                        .post(`/employee/update/${id}`, values)
+                        .then((response) => {
+                            if (response.status === 200) {
+                                notification.success({
+                                    message: "Saved",
+                                    description: response.data.message,
+                                });
+                                setTimeout(() => {
+                                    history.push("/employee/index");
+                                }, 300);
+                            }
                         })
+                        .catch((error) => {
+                            console.log("error:", error);
+                        });
                 } catch (e) {
                     console.log("dont save:", e);
+                    notification.error({
+                        message: "Warning",
+                        description: "Validation error",
+                    });
                 }
             })
             .catch(errorInfo => {
-                console.log('Validate Failed:', errorInfo);
+                console.log("errorInfo:", errorInfo);
+                notification.error({
+                    message: "Warning",
+                    description: "Validation error",
+                });
             })
     };
 
