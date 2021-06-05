@@ -14,7 +14,6 @@ const EditEmployee = ({match}) => {
 
     let history = useHistory();
 
-
     useEffect(() => {
         connection.get('/positions')
             .then(response => {
@@ -27,8 +26,6 @@ const EditEmployee = ({match}) => {
             .then(response => {
                 if (response.status === 200) {
                     const data = response.data.data;
-
-                    console.log(data);
 
                     if (data.email !== undefined) {
                         const birthday = moment(data.birthday);
@@ -61,7 +58,6 @@ const EditEmployee = ({match}) => {
     }, []);
 
     const removeFile = data => {
-        console.log("remove:", data);
         connection.post('employee/removeFile', data).then(response => {
             if (response.status === 200) {
                 setDefaultFileList([]);
@@ -71,7 +67,6 @@ const EditEmployee = ({match}) => {
         })
     }
     const {id} = match.params;
-    console.log('id', id);
 
     const uploadFiled = ({
                              action,
@@ -87,7 +82,9 @@ const EditEmployee = ({match}) => {
         const formData = new FormData();
         formData.append(filename, file);
         connection.post(`/employee/upload/${data.id}`, formData).then(response => {
-            console.log(response);
+            if (response.status === 200) {
+                setDefaultFileList([response.data]);
+            }
         }).catch(error => {
             console.log('error uploadinf', error);
         });
@@ -96,7 +93,6 @@ const EditEmployee = ({match}) => {
     const editEmployee = () => {
         form.validateFields()
             .then(values => {
-                console.log("values:", values);
                 try {
                     connection
                         .post(`/employee/update/${id}`, values)

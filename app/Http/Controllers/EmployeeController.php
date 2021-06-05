@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\Position;
-use Error;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -68,8 +67,6 @@ class EmployeeController extends Controller
     public function editEmployee($id)
     {
         $employee = Employee::find($id);
-
-//        return response()->json($employee);
 
         return new EmployeeResource($employee);
     }
@@ -136,7 +133,7 @@ class EmployeeController extends Controller
         return response()->json($response, $status);
     }
 
-    public function uploadFile(Request $request, $id)
+    public function uploadFile(Request $request, $id=null)
     {
         $response = ['status' => false, 'message' => 'error'];
         $status = 400;
@@ -145,11 +142,15 @@ class EmployeeController extends Controller
             $pathSave = date('Y/m/d');
 
             try {
+                $urlBaseFiles = getenv('AZURE_STORAGE_URL');
+
                 $path = Storage::putFile($pathSave, $request->file('fileEmployee'));
 
                 if (is_null($id)) {
                     $response['status'] = true;
-                    $response['message'] = $path;
+                    $response['message'] = 'done';
+                    $response['url'] = $urlBaseFiles . '/' . $path;
+                    $response['path'] = $path;
                     return response()->json($response);
                 } else {
                     $employee = Employee::find((int) $id);
@@ -162,8 +163,9 @@ class EmployeeController extends Controller
 
                     try {
                         $employee->save();
-                        $response['status'] = true;
-                        $response['message'] = $path;
+                        $response['uid'] = $id;
+                        $response['name'] = $employee->name;
+                        $response['url'] = $urlBaseFiles . '/' . $path;
                         $status = 200;
 
                     } catch (\Exception $e) {
@@ -209,7 +211,6 @@ class EmployeeController extends Controller
                 $response['message'] = "Can't remove file:" . $e->getMessage();
             }
         }
-
 
         return response()->json($response, $status);
     }

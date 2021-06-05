@@ -6,10 +6,11 @@ import {useHistory} from "react-router-dom";
 
 const NewEmployee = () => {
     const [form] = Form.useForm();
+    const [defaultFileList, setDefaultFileList] = useState([]);
     const [positions, setPositions] = useState([]);
     let history = useHistory();
 
-    useEffect(()=> {
+    useEffect(() => {
         connection.get('/positions')
             .then(response => {
                 if (response.status === 200) {
@@ -18,18 +19,34 @@ const NewEmployee = () => {
             })
     }, []);
 
+    const uploadFiled = ({file, filename,}) => {
+        const formData = new FormData();
+        formData.append(filename, file);
+        connection.post(`/employee/upload/`, formData).then(response => {
+            if (response.status === 200) {
+                setDefaultFileList([response.data]);
+
+                form.setFieldsValue({
+                    'picture': response.data.path,
+                });
+            }
+        }).catch(error => {
+            console.log('error uploadinG', error);
+        });
+    }
+
     const createEmployee = () => {
         form.validateFields()
-            .then(values=>{
-                console.log("values:", values);
-                try{
-                    connection.post("/employee/save",values).then(response => {
+            .then(values => {
+                console.log("values nre Form:", values);
+                try {
+                    connection.post("/employee/save", values).then(response => {
                         if (response.status === 200) {
                             notification.success({
                                 message: 'Saved',
                                 description: response.data.message
                             });
-                            setTimeout(()=> {
+                            setTimeout(() => {
                                 history.push("/employee/index");
                             }, 300);
 
@@ -57,6 +74,8 @@ const NewEmployee = () => {
                 name="newEmployee"
                 positions={positions}
                 saveHandler={createEmployee}
+                fileList={defaultFileList}
+                customUpload={uploadFiled}
             />
         </>
     )
