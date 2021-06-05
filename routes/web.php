@@ -36,3 +36,5 @@ Route::post('/employee/save', 'App\Http\Controllers\EmployeeController@save');
 Route::get('/employee/editEmployee/{id}', 'App\Http\Controllers\EmployeeController@editEmployee');
 Route::post('/employee/update/{id}', 'App\Http\Controllers\EmployeeController@update');
 Route::delete('/employee/{id}', 'App\Http\Controllers\EmployeeController@trash');
+Route::post('/employee/upload/{id}', 'App\Http\Controllers\EmployeeController@uploadFile');
+Route::post('/employee/removeFile', 'App\Http\Controllers\EmployeeController@removeFile');

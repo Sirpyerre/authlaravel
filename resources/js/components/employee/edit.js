@@ -6,10 +6,14 @@ import {useHistory} from "react-router-dom";
 import moment from "moment";
 
 const EditEmployee = ({match}) => {
+    const [defaultFileList, setDefaultFileList] = useState([]);
     const [form] = Form.useForm();
     const [positions, setPositions] = useState([]);
     const [findEmployee, setFindEmployee] = useState(false);
+    const [data, setData] = useState({});
+
     let history = useHistory();
+
 
     useEffect(() => {
         connection.get('/positions')
@@ -22,26 +26,33 @@ const EditEmployee = ({match}) => {
         connection.get(`/employee/editEmployee/${id}`)
             .then(response => {
                 if (response.status === 200) {
-                    const data = response.data;
+                    const data = response.data.data;
+
+                    console.log(data);
 
                     if (data.email !== undefined) {
-                        console.log("email", data.email);
                         const birthday = moment(data.birthday);
-                        console.log('date emp:', birthday);
-
                         form.setFieldsValue({
                             'name': data.name,
-                            'first_name': data.first_name,
-                            'second_name': data.first_name,
+                            'first_name': data.firstName,
+                            'second_name': data.secondName,
                             'email': data.email,
                             'birthday': birthday,
                             'phone': data.phone,
-                            //                 'picture': data.picture,
+                            'picture': data.picture,
                             'position_id': data.position_id,
-                            'salary': data.salary,
+                            'salary': parseInt(data.salary),
                         });
 
                         setFindEmployee(true);
+                        setData({id: data.id})
+
+                        let fileList = [];
+
+                        if (data.picture !== '') {
+                            fileList.push({uid: data.id, url: data.picture, name: data.name});
+                            setDefaultFileList(fileList);
+                        }
                     }
                 }
             }).catch(error => {
@@ -49,9 +60,38 @@ const EditEmployee = ({match}) => {
         })
     }, []);
 
+    const removeFile = data => {
+        console.log("remove:", data);
+        connection.post('employee/removeFile', data).then(response => {
+            if (response.status === 200) {
+                setDefaultFileList([]);
+            }
+        }).catch(error => {
+            console.log('removing', error);
+        })
+    }
     const {id} = match.params;
     console.log('id', id);
 
+    const uploadFiled = ({
+                             action,
+                             data,
+                             file,
+                             filename,
+                             headers,
+                             onError,
+                             onProgress,
+                             onSuccess,
+                             withCredentials,
+                         }) => {
+        const formData = new FormData();
+        formData.append(filename, file);
+        connection.post(`/employee/upload/${data.id}`, formData).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log('error uploadinf', error);
+        });
+    }
 
     const editEmployee = () => {
         form.validateFields()
@@ -104,6 +144,10 @@ const EditEmployee = ({match}) => {
                     name="editEmployee"
                     positions={positions}
                     saveHandler={editEmployee}
+                    customUpload={uploadFiled}
+                    data={data}
+                    fileList={defaultFileList}
+                    removeHandler={removeFile}
                 /> : messageNotFount
             }
 
