@@ -38,3 +38,4 @@ Route::post('/employee/update/{id}', 'App\Http\Controllers\EmployeeController@up
 Route::post('/employee/upload/{id?}', 'App\Http\Controllers\EmployeeController@uploadFile');
 Route::delete('/employee/{id}', 'App\Http\Controllers\EmployeeController@trash');
 Route::post('/employee/removeFile', 'App\Http\Controllers\EmployeeController@removeFile');
+Route::get('/employee/details/{id}', 'App\Http\Controllers\EmployeeController@details');

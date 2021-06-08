@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import connection from "../../services/connection";
 import {Pagination, Spin, Popconfirm} from 'antd';
+import {Link} from "react-router-dom";
 
 const List = () => {
         const [employees, setEmployees] = useState({});
@@ -112,6 +113,9 @@ const List = () => {
                                                    onClick={() => showDeleteEmployee(item.id)}
                                                    href="#">Trash</a>
                                             </Popconfirm>
+                                            <a href={`/employee/details/${item.id}`}>
+                                                Details
+                                            </a>
                                         </td>
                                     </tr>
                                 )

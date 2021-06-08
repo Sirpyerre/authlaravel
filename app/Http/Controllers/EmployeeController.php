@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\Position;
+use PDF;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -213,5 +214,26 @@ class EmployeeController extends Controller
         }
 
         return response()->json($response, $status);
+    }
+
+    public function details($id)
+    {
+        $employee = Employee::find((int) $id);
+        if (is_null($employee)) {
+            return null;
+        }
+
+        $picturePath = '';
+        if (!empty($employee->picture)){
+            $picturePath = getenv('AZURE_STORAGE_URL') . '/' . $employee->picture;
+        }
+
+//        return view('employees.details', ['employee'=> $employee, 'picture' => $picturePath]);
+        $data = ['employee'=> $employee, 'picture' => $picturePath];
+        $pdf = PDF::loadView('employees.details', $data);
+
+        $filePdf = $employee->name.'_'.microtime();
+
+        return $pdf->download("$filePdf.pdf");
     }
 }
